@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Aprov+</title>
+
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+
+    <main class="pagina-login">
+        <section class="card-login">
+
+            <div class="perfil">
+            <img src="images/fotoperfil.jpg" alt="Foto de perfil" id="fotoPerfil">
+            </div>
+
+
+            <div class="cabecalho">
+            <h1> Bem-vindo de volta!</h1>
+            <p>Entre na sua conta para continuar seus estudos.</p>
+            </div>
+
+
+            <form id="formLogin">
+                <button type="button" class="botao-google" id="botaoGoogle">
+                    <span class="icone-google">G </span>
+                    <span>Continuar com Google</span>
+                </button>
+
+
+                <div class="divisor">
+                    <span> ou </span>
+                </div>
+
+
+                <div class="campo">
+                <label for="email"> E-mail </label>
+                <input type="email" id="email" name="email" placeholder="Digite seu e-mail" autocomplete="email" required>
+                </div>
+
+
+                <div class="campo">
+                    <div class="label-senha">
+                        <label for="senha">Senha</label>
+                        <a href="#" id="esqueciSenha">Esqueci minha senha</a>
+                    </div>
+
+                    <div class="campo-senha">
+                        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" autocomplete="current-password" required>
+
+                        <button type="button" class="mostrar-senha" id="mostrarSenha">Mostrar</button>
+
+                    </div>
+                </div>
+
+
+                <div id="mensagem" class="mensagem"></div>
+
+
+                <button type="submit" class="botao-login"> Entrar</button>
+            </form>
+
+
+            <div class="cadastro">
+                <span>Ainda não possui uma conta?</span>
+                <a href="index.html">Criar conta</a>
+
+            </div>
+        </section>
+    </main>
+
+
+    <script src="login.js"></script>
+
+</body>
+
+</html>

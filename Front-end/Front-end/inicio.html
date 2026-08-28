@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Aprov+</title>
+
+<link rel="icon" type="image/png" href="./images/iconlogo.png">
+
+<link rel="stylesheet" href="inicio.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+    <body>
+
+    <header class="navbar">
+    <a href="inicio.html" class="logo-link"><img src="./images/iconlogo.png" class="logo" alt="Aprov+"></a>
+
+    <nav class="menu">
+    <a href="inicio.html" class="menu-item ativo"><i class="fa-solid fa-house"></i><span>Início</span></a>
+    <a href="#" class="menu-item"><i class="fa-solid fa-book"></i><span>Matérias</span></a>
+    <a href="#" class="menu-item"><i class="fa-solid fa-circle-question"></i><span>Banco de questões</span></a>
+    <a href="#" class="menu-item"><i class="fa-solid fa-clipboard"></i><span>Simulados</span></a>
+    <a href="#" class="menu-item"><i class="fa-solid fa-layer-group"></i><span>Flashcards</span></a>
+    <a href="#" class="menu-item"><i class="fa-solid fa-calendar-days"></i><span>Agenda</span></a>
+    <a href="#" class="menu-item"><i class="fa-solid fa-pen"></i><span>Redação</span></a>
+    <a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i><span>TRI</span></a>
+    <a href="#" class="menu-item menu-ia"><span class="icone-ia"><i class="fa-brands fa-openai"></i><b>1</b></span><span>IA</span></a>
+    <a href="#" class="menu-item"><i class="fa-solid fa-circle-user"></i><span>Perfil</span></a>
+    </nav>
+
+    <div class="usuario">
+    <div class="usuario-info">
+    <i class="fa-solid fa-circle-user"></i>
+    <div class="dados-usuario">
+    <strong id="nomeUsuario">Usuário</strong>
+    <span>Estudante</span>
+    </div>
+    </div>
+    <button class="botao-sair" id="botaoSair"><i class="fa-solid fa-right-from-bracket"></i></button>
+    </div>
+    </header>
+
+    <main class="conteudo">
+
+    <section class="cabecalho-pagina">
+    <div>
+    <span class="etiqueta">SEU ESPAÇO DE ESTUDOS</span>
+    <h1 id="tituloBoasVindas">Olá, Usuário!</h1>
+    <p>Acompanhe seus estudos e continue avançando rumo à aprovação.</p>
+    </div>
+    <div class="data-atual" id="dataAtual">Hoje</div>
+    </section>
+
+    <section class="cards-progresso">
+
+    <div class="card-progresso">
+    <div class="icone-progresso"><i class="fa-solid fa-circle-question"></i></div>
+    <div><span>Questões resolvidas</span><strong>0</strong></div>
+    </div>
+
+    <div class="card-progresso">
+    <div class="icone-progresso"><i class="fa-solid fa-check"></i></div>
+    <div><span>Taxa de acertos</span><strong>0%</strong></div>
+    </div>
+
+    <div class="card-progresso">
+    <div class="icone-progresso"><i class="fa-solid fa-clock"></i></div>
+    <div><span>Tempo de estudo</span><strong>0h</strong></div>
+    </div>
+
+    <div class="card-progresso">
+    <div class="icone-progresso"><i class="fa-solid fa-bullseye"></i></div>
+    <div><span>Meta diária</span><strong>0%</strong></div>
+    </div>
+
+    </section>
+
+    <section class="card grafico-card">
+
+    <div class="cabecalho-card">
+    <div>
+    <span class="titulo-pequeno">DESEMPENHO</span>
+    <h2>Evolução dos estudos</h2>
+    </div>
+
+    <div class="filtros">
+    <button class="filtro ativo" data-periodo="7">7 dias</button>
+    <button class="filtro" data-periodo="30">30 dias</button>
+    <button class="filtro" data-periodo="90">3 meses</button>
+    </div>
+    </div>
+
+    <div class="grafico">
+    <canvas id="graficoDesempenho"></canvas>
+    </div>
+
+    </section>
+
+    <section class="grid">
+
+    <div class="card">
+
+    <div class="cabecalho-card">
+    <div>
+    <span class="titulo-pequeno">ESTUDOS</span>
+    <h2>Matérias em andamento</h2>
+    </div>
+    <a href="#">Ver todas</a>
+    </div>
+
+    <div class="materias">
+
+    <div class="materia">
+    <div class="materia-icon"><i class="fa-solid fa-calculator"></i></div>
+    <div class="materia-info">
+    <strong>Matemática</strong>
+    <span>Funções e Matemática básica</span>
+    <div class="barra"><i style="width:68%"></i></div>
+    <small>68% concluído</small>
+    </div>
+    </div>
+
+    <div class="materia">
+    <div class="materia-icon"><i class="fa-solid fa-dna"></i></div>
+    <div class="materia-info">
+    <strong>Biologia</strong>
+    <span>Ecologia e genética</span>
+    <div class="barra"><i style="width:45%"></i></div>
+    <small>45% concluído</small>
+    </div>
+    </div>
+
+    <div class="materia">
+    <div class="materia-icon"><i class="fa-solid fa-landmark"></i></div>
+    <div class="materia-info">
+    <strong>História</strong>
+    <span>Brasil República</span>
+    <div class="barra"><i style="width:32%"></i></div>
+    <small>32% concluído</small>
+    </div>
+    </div>
+
+    </div>
+    </div>
+
+    <div class="card">
+
+    <div class="cabecalho-card">
+    <div>
+    <span class="titulo-pequeno">AGENDA</span>
+    <h2>Próximos eventos</h2>
+    </div>
+    <a href="#">Ver agenda</a>
+    </div>
+
+    <div class="eventos">
+
+    <div class="evento">
+    <div class="data-evento"><strong>20</strong><span>AGO</span></div>
+    <div><strong>Simulado ENEM</strong><span>14:00 • 90 questões</span></div>
+    </div>
+
+    <div class="evento">
+    <div class="data-evento"><strong>22</strong><span>AGO</span></div>
+    <div><strong>Revisão de Matemática</strong><span>16:00 • Funções</span></div>
+    </div>
+
+    <div class="evento">
+    <div class="data-evento"><strong>25</strong><span>AGO</span></div>
+    <div><strong>Entrega de redação</strong><span>Até 23:59</span></div>
+    </div>
+
+    </div>
+    </div>
+
+    </section>
+
+    <section class="grid">
+
+    <div class="card">
+
+    <div class="cabecalho-card">
+    <div>
+    <span class="titulo-pequeno">SIMULADOS</span>
+    <h2>Simulados recentes</h2>
+    </div>
+    <a href="#">Ver simulados</a>
+    </div>
+
+    <div class="lista">
+
+    <div class="linha">
+    <div class="linha-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+    <div class="linha-info"><strong>Simulado ENEM #03</strong><span>90 questões • Finalizado</span></div>
+    <div class="resultado"><strong>72%</strong><span>acertos</span></div>
+    </div>
+
+    <div class="linha">
+    <div class="linha-icon"><i class="fa-solid fa-flask"></i></div>
+    <div class="linha-info"><strong>Simulado Ciências da Natureza</strong><span>45 questões • Finalizado</span></div>
+    <div class="resultado"><strong>64%</strong><span>acertos</span></div>
+    </div>
+
+    <div class="linha">
+    <div class="linha-icon"><i class="fa-solid fa-calculator"></i></div>
+    <div class="linha-info"><strong>Simulado Matemática</strong><span>45 questões • Finalizado</span></div>
+    <div class="resultado"><strong>81%</strong><span>acertos</span></div>
+    </div>
+
+    </div>
+    </div>
+
+    <div class="card">
+
+    <div class="cabecalho-card">
+    <div>
+    <span class="titulo-pequeno">REDAÇÃO</span>
+    <h2>Redações enviadas</h2>
+    </div>
+    <a href="#">Ver redações</a>
+    </div>
+
+    <div class="lista">
+
+    <div class="linha">
+    <div class="linha-icon redacao"><i class="fa-solid fa-pen-nib"></i></div>
+    <div class="linha-info"><strong>Desafios da educação brasileira</strong><span>Corrigida • ENEM</span></div>
+    <div class="nota"><strong>880</strong><span>nota</span></div>
+    </div>
+
+    <div class="linha">
+    <div class="linha-icon redacao"><i class="fa-solid fa-pen-nib"></i></div>
+    <div class="linha-info"><strong>Impactos da inteligência artificial</strong><span>Corrigida • ENEM</span></div>
+    <div class="nota"><strong>920</strong><span>nota</span></div>
+    </div>
+
+    <div class="linha">
+    <div class="linha-icon redacao"><i class="fa-solid fa-pen-nib"></i></div>
+    <div class="linha-info"><strong>Desigualdade social no Brasil</strong><span>Em correção</span></div>
+    <div class="nota pendente">...</div>
+    </div>
+
+    </div>
+    </div>
+
+    </section>
+
+    <section class="card acesso-card">
+
+    <div class="cabecalho-card">
+    <div>
+    <span class="titulo-pequeno">ACESSO RÁPIDO</span>
+    <h2>O que você quer fazer?</h2>
+    </div>
+    </div>
+
+    <div class="acesso">
+
+    <button>
+    <i class="fa-solid fa-circle-question"></i>
+    <span>Resolver questões</span>
+    <b>›</b>
+    </button>
+
+    <button>
+    <i class="fa-solid fa-clipboard"></i>
+    <span>Fazer simulado</span>
+    <b>›</b>
+    </button>
+
+    <button>
+    <i class="fa-solid fa-layer-group"></i>
+    <span>Revisar flashcards</span>
+    <b>›</b>
+    </button>
+
+    <button>
+    <i class="fa-solid fa-pen-nib"></i>
+    <span>Escrever redação</span>
+    <b>›</b>
+    </button>
+
+    <button>
+    <i class="fa-solid fa-calendar-days"></i>
+    <span>Organizar agenda</span>
+    <b>›</b>
+    </button>
+
+    <button>
+    <i class="fa-brands fa-openai"></i>
+    <span>Perguntar à IA</span>
+    <b>›</b>
+    </button>
+
+    </div>
+    </section>
+
+    </main>
+
+    <script src="inicio.js"></script>
+    </body>
+    </html>

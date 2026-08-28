@@ -1,0 +1,423 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f8f9fc;
+    color: #12315b;
+}
+
+
+.pagina-cadastro {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px 20px;
+}
+
+
+.card-cadastro {
+    width: 100%;
+    max-width: 460px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e9f1;
+    border-radius: 18px;
+
+    padding: 40px;
+
+    box-shadow:
+        0 8px 30px rgba(18, 49, 91, 0.08);
+}
+
+
+.perfil {
+    width: 90px;
+    height: 90px;
+
+    margin: 0 auto 28px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background: #e8f7fc;
+
+    border: 3px solid #2a9fd6;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow:
+        0 4px 12px rgba(42, 159, 214, 0.15);
+}
+
+.perfil img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+.cabecalho {
+    text-align: center;
+
+    margin-bottom: 28px;
+}
+
+.cabecalho h1 {
+    color: #12315b;
+
+    font-size: 27px;
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
+
+    margin-bottom: 9px;
+}
+
+.cabecalho p {
+    color: #6d7787;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+form {
+    width: 100%;
+}
+
+
+.botao-google {
+    width: 100%;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    background: #ffffff;
+
+    border: 1px solid #dce2eb;
+    border-radius: 9px;
+
+    color: #25364d;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.botao-google:hover {
+    background: #f9fafc;
+
+    border-color: #bfc9d8;
+
+    box-shadow:
+        0 2px 8px rgba(18, 49, 91, 0.06);
+}
+
+.botao-google:active {
+    transform: scale(0.98);
+}
+
+
+.icone-google {
+    width: 21px;
+    height: 21px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    color: #4285f4;
+}
+
+
+.divisor {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin: 23px 0;
+}
+
+.divisor::before,
+.divisor::after {
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background: #e3e7ee;
+}
+
+.divisor span {
+    color: #8993a2;
+
+    font-size: 12px;
+}
+
+
+.campo {
+    margin-bottom: 18px;
+}
+
+.campo label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #25364d;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.campo input {
+    width: 100%;
+    height: 48px;
+
+    padding: 0 14px;
+
+    background: #ffffff;
+
+    border: 1px solid #dce2eb;
+    border-radius: 9px;
+
+    color: #12315b;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.campo input::placeholder {
+    color: #9aa4b2;
+}
+
+.campo input:hover {
+    border-color: #bfc9d8;
+}
+
+.campo input:focus {
+    border-color: #2a9fd6;
+
+    box-shadow:
+        0 0 0 3px rgba(42, 159, 214, 0.12);
+}
+
+
+.campo-senha {
+    position: relative;
+
+    width: 100%;
+}
+
+.campo-senha input {
+    padding-right: 75px;
+}
+
+.mostrar-senha {
+    position: absolute;
+
+    right: 13px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    padding: 3px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #2a9fd6;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.mostrar-senha:hover {
+    color: #2457c5;
+}
+
+
+.mensagem {
+    width: 100%;
+
+    min-height: 18px;
+
+    margin-top: -3px;
+    margin-bottom: 8px;
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+
+.botao-cadastro {
+    width: 100%;
+    height: 49px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #2a9fd6;
+
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.15s ease;
+}
+
+.botao-cadastro:hover {
+    background: #2457c5;
+
+    box-shadow:
+        0 6px 18px rgba(36, 87, 197, 0.25);
+}
+
+.botao-cadastro:active {
+    transform: scale(0.98);
+}
+
+
+.login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    margin-top: 23px;
+
+    color: #6d7787;
+
+    font-size: 13px;
+}
+
+.login a {
+    color: #2457c5;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.login a:hover {
+    color: #12315b;
+
+    text-decoration: underline;
+}
+
+
+@media (max-width: 520px) {
+
+    .pagina-cadastro {
+        padding: 20px 15px;
+    }
+
+    .card-cadastro {
+        padding: 30px 22px;
+
+        border-radius: 15px;
+    }
+
+    .perfil {
+        width: 82px;
+        height: 82px;
+
+        margin-bottom: 24px;
+    }
+
+    .cabecalho h1 {
+        font-size: 25px;
+    }
+
+    .cabecalho p {
+        font-size: 13px;
+    }
+
+    .campo input,
+    .botao-google {
+        height: 47px;
+    }
+
+    .botao-cadastro {
+        height: 48px;
+    }
+}
+
+
+@media (max-width: 360px) {
+
+    .pagina-cadastro {
+        padding: 15px 10px;
+    }
+
+    .card-cadastro {
+        padding: 25px 18px;
+    }
+
+    .perfil {
+        width: 76px;
+        height: 76px;
+    }
+
+    .cabecalho h1 {
+        font-size: 23px;
+    }
+
+    .login {
+        flex-direction: column;
+
+        gap: 3px;
+    }
+}
