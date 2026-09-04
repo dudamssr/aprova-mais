@@ -8,6 +8,7 @@ import '../ui/splash.dart';
 import '../ui/perfil.dart';
 import '../ui/redacao.dart';
 import '../ui/flashcards.dart';
+import '../ui/materias_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   final String selectedLabel;
@@ -112,6 +113,13 @@ class AppDrawer extends StatelessWidget {
       Navigator.of(
         context,
       ).push(MaterialPageRoute(builder: (_) => const FlashcardsPage()));
+      return;
+    }
+
+    if (item.label == 'Matérias') {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (_) => const MateriasScreen()));
       return;
     }
 

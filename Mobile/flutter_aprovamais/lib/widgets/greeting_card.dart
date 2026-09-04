@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../style/app_thema.dart';
 
 class GreetingCard extends StatelessWidget {
   final String greeting;
@@ -25,49 +24,60 @@ class GreetingCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
+        color: Colors.white, // fundo branco
         borderRadius: BorderRadius.circular(24),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.heroGradientStart, AppColors.heroGradientEnd],
-        ),
+        border: Border.all(
+          color: const Color(0xFFE7EDF3),
+        ), // borda azul bem clara
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Saudação
           Row(
             children: [
               Text(
                 greeting,
-                style: const TextStyle(color: AppColors.white70, fontSize: 15),
+                style: const TextStyle(
+                  color: Color(0xFF299FD6), // azul claro
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(width: 4),
               const Text('👋', style: TextStyle(fontSize: 15)),
             ],
           ),
           const SizedBox(height: 6),
+
+          // Nome do usuário
           RichText(
             text: TextSpan(
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Color(0xFF102F55), // azul escuro
                 height: 1.25,
               ),
               children: [TextSpan(text: '$userName, vamos estudar\nhoje!')],
             ),
           ),
           const SizedBox(height: 10),
+
+          // Meta semanal
           RichText(
             text: TextSpan(
-              style: const TextStyle(color: AppColors.white70, fontSize: 14),
+              style: const TextStyle(
+                color: Color(0xFF8290A2),
+                fontSize: 14,
+              ), // cinza claro
               children: [
                 const TextSpan(text: 'Você está a '),
                 TextSpan(
                   text: '${(goalPercent * 100).round()}%',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Color(0xFF299FD6), // azul claro em destaque
                   ),
                 ),
                 const TextSpan(text: ' da sua meta semanal. Continue assim!'),
@@ -75,8 +85,10 @@ class GreetingCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 18),
+
+          // Botão IA
           Material(
-            color: Colors.white.withValues(alpha: 0.12),
+            color: const Color(0xFFEAF4FB), // azul bem claro
             borderRadius: BorderRadius.circular(14),
             child: InkWell(
               borderRadius: BorderRadius.circular(14),
@@ -89,14 +101,14 @@ class GreetingCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.chat_bubble_outline,
-                        color: Colors.white,
+                        color: Color(0xFF2457C5), // azul médio
                         size: 18,
                       ),
                       SizedBox(width: 8),
                       Text(
                         'Tirar dúvida com IA',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Color(0xFF2457C5), // azul médio
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
                         ),
@@ -108,27 +120,33 @@ class GreetingCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
+
+          // Meta diária
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
                 'Meta diária',
-                style: TextStyle(color: AppColors.white70, fontSize: 13),
+                style: TextStyle(color: Color(0xFF8290A2), fontSize: 13),
               ),
               Text(
                 '${(goalPercent * 100).round()}% • $hoursDone de $hoursTotal',
-                style: const TextStyle(color: AppColors.white70, fontSize: 13),
+                style: const TextStyle(color: Color(0xFF8290A2), fontSize: 13),
               ),
             ],
           ),
           const SizedBox(height: 8),
+
+          // Barra de progresso
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: LinearProgressIndicator(
               value: goalPercent,
               minHeight: 8,
-              backgroundColor: Colors.white.withValues(alpha: 0.18),
-              valueColor: const AlwaysStoppedAnimation(Colors.white),
+              backgroundColor: const Color(0xFFEDF2F5), // azul bem claro
+              valueColor: const AlwaysStoppedAnimation(
+                Color(0xFF299FD6),
+              ), // azul claro
             ),
           ),
         ],

@@ -38,7 +38,7 @@ final ThemeData darkTheme = ThemeData(
     elevation: 2,
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: turquoiseBlue,
+    backgroundColor: aquaBlue,
     foregroundColor: Colors.white,
   ),
   textTheme: const TextTheme(

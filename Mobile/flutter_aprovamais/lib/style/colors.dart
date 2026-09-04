@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 
-const Color midnightBlue = Color(0xFF0D1B2A);
-const Color navyBlue = Color(0xFF1B263B);
-const Color cobaltBlue = Color(0xFF1565C0);
-const Color ceruleanBlue = Color(0xFF42A5F5);
-const Color skyBlue = Color(0xFF81D4FA);
-const Color aquaBlue = Color(0xFF4DD0E1);
-const Color turquoiseBlue = Color(0xFF00ACC1);
-const Color periwinkleBlue = Color(0xFF8AB6D6);
-const Color babyBlue = Color(0xFFBBDEFB);
-const Color paleBlue = Color(0xFFE3F2FD);
+const Color midnightBlue = Color(0xFF1B2F5B);
+const Color navyBlue = Color(0xFF23467C);
+const Color cobaltBlue = Color(0xFF3566A8);
+const Color ceruleanBlue = Color(0xFF4F82C8);
+const Color skyBlue = Color(0xFF79B4E8);
+const Color aquaBlue = Color(0xFFA7D9F5);
+const Color paleBlue = Color(0xFFEAF4FC);
+
 const Color textMedium = Color(0xFF6B6B6B);
-const Color textColor = textDark;
+const Color textDark = Color(0xFF0D47A1);
 
 const Color primaryColor = cobaltBlue;
 const Color accentColor = ceruleanBlue;
@@ -20,4 +18,3 @@ const Color lightBackground = paleBlue;
 const Color darkBackground = midnightBlue;
 
 const Color textLight = Colors.white;
-const Color textDark = Color(0xFF0D47A1);

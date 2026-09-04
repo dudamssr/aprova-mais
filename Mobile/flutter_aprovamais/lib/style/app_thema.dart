@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'colors.dart';
 
 class AppColors {
   AppColors._();
 
-  static const Color background = Color(0xFFEFF3F8);
-  static const Color cardBackground = Color(0xFFFFFFFF);
+  static const Color background = paleBlue;
+  static const Color cardBackground = Colors.white;
 
-  static const Color heroGradientStart = Color(0xFF223A63);
-  static const Color heroGradientEnd = Color(0xFF3E6296);
+  static const Color heroGradientStart = navyBlue;
+  static const Color heroGradientEnd = cobaltBlue;
 
-  static const Color primaryBlue = Color(0xFF3E6296);
-  static const Color accentBlue = Color(0xFF5B8DEF);
-  static const Color lightBlue = Color(0xFFDCE7F7);
+  static const Color primaryBlue = cobaltBlue;
+  static const Color accentBlue = ceruleanBlue;
+  static const Color lightBlue = skyBlue;
 
   static const Color textDark = Color(0xFF1E2A3A);
   static const Color textMedium = Color(0xFF6B7A90);

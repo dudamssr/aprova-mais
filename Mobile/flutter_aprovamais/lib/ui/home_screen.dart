@@ -21,6 +21,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // fundo branco
       drawer: const AppDrawer(selectedLabel: 'Início'),
       body: SafeArea(
         child: ListView(
@@ -77,7 +78,10 @@ class _TopBar extends StatelessWidget {
           ),
         ),
         IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
+          icon: const Icon(
+            Icons.menu,
+            color: Color(0xFF102F55), // azul escuro
+          ),
           onPressed: () => Scaffold.of(context).openDrawer(),
         ),
       ],
