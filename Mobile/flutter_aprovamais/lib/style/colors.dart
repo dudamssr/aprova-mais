@@ -10,6 +10,8 @@ const Color turquoiseBlue = Color(0xFF00ACC1);
 const Color periwinkleBlue = Color(0xFF8AB6D6);
 const Color babyBlue = Color(0xFFBBDEFB);
 const Color paleBlue = Color(0xFFE3F2FD);
+const Color textMedium = Color(0xFF6B6B6B);
+const Color textColor = textDark;
 
 const Color primaryColor = cobaltBlue;
 const Color accentColor = ceruleanBlue;

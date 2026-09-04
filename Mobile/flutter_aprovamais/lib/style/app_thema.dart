@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
-/// Paleta de cores centralizada do app.
-/// Baseada no design original (tons de azul).
 class AppColors {
   AppColors._();
 
   static const Color background = Color(0xFFEFF3F8);
   static const Color cardBackground = Color(0xFFFFFFFF);
 
-  // Gradiente do card de saudação
   static const Color heroGradientStart = Color(0xFF223A63);
   static const Color heroGradientEnd = Color(0xFF3E6296);
 

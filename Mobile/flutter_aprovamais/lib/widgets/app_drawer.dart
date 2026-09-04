@@ -7,9 +7,9 @@ import '../ui/ai_chat_screen.dart';
 import '../ui/splash.dart';
 import '../ui/perfil.dart';
 import '../ui/redacao.dart';
+import '../ui/flashcards.dart';
 
 class AppDrawer extends StatelessWidget {
-  /// Label do item atualmente selecionado (ex: 'Início').
   final String selectedLabel;
 
   const AppDrawer({super.key, this.selectedLabel = 'Início'});
@@ -51,7 +51,6 @@ class AppDrawer extends StatelessWidget {
 
             _LogoutTile(
               onTap: () {
-                // Vai para a Splash e remove todas as telas anteriores.
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (_) => const SplashScreen()),
                   (route) => false,
@@ -109,9 +108,13 @@ class AppDrawer extends StatelessWidget {
       return;
     }
 
-    // =========================
-    // OUTRAS TELAS
-    // =========================
+    if (item.label == 'Flashcards') {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (_) => const FlashcardsPage()));
+      return;
+    }
+
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => PlaceholderScreen(title: item.label, icon: item.icon),

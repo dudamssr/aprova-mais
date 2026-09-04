@@ -118,10 +118,6 @@ class _PerfilPageState extends State<PerfilPage> {
     );
   }
 
-  Widget _buildTopBar() {
-    return const _TopBar();
-  }
-
   Widget _buildPerfilCard() {
     return Container(
       width: double.infinity,

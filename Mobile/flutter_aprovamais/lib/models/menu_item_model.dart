@@ -8,7 +8,6 @@ class MenuItemData {
   const MenuItemData({required this.icon, required this.label});
 }
 
-/// Lista de itens do menu, na ordem em que aparecem no app.
 class AppMenu {
   AppMenu._();
 
