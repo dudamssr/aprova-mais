@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'home.dart';
+import 'login.dart';
 import '../style/app_thema.dart';
 
 class RedefinirSenhaConfirmacaoPage extends StatelessWidget {

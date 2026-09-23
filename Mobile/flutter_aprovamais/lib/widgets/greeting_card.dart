@@ -6,7 +6,6 @@ class GreetingCard extends StatelessWidget {
   final double goalPercent;
   final String hoursDone;
   final String hoursTotal;
-  final VoidCallback? onAskAI;
 
   const GreetingCard({
     super.key,
@@ -15,7 +14,6 @@ class GreetingCard extends StatelessWidget {
     required this.goalPercent,
     required this.hoursDone,
     required this.hoursTotal,
-    this.onAskAI,
   });
 
   @override
@@ -48,6 +46,7 @@ class GreetingCard extends StatelessWidget {
               const Text('👋', style: TextStyle(fontSize: 15)),
             ],
           ),
+
           const SizedBox(height: 6),
 
           // Nome do usuário
@@ -62,6 +61,7 @@ class GreetingCard extends StatelessWidget {
               children: [TextSpan(text: '$userName, vamos estudar\nhoje!')],
             ),
           ),
+
           const SizedBox(height: 10),
 
           // Meta semanal
@@ -84,41 +84,7 @@ class GreetingCard extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 18),
 
-          // Botão IA
-          Material(
-            color: const Color(0xFFEAF4FB), // azul bem claro
-            borderRadius: BorderRadius.circular(14),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(14),
-              onTap: onAskAI,
-              child: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 14),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.chat_bubble_outline,
-                        color: Color(0xFF2457C5), // azul médio
-                        size: 18,
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        'Tirar dúvida com IA',
-                        style: TextStyle(
-                          color: Color(0xFF2457C5), // azul médio
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
           const SizedBox(height: 20),
 
           // Meta diária
@@ -135,6 +101,7 @@ class GreetingCard extends StatelessWidget {
               ),
             ],
           ),
+
           const SizedBox(height: 8),
 
           // Barra de progresso

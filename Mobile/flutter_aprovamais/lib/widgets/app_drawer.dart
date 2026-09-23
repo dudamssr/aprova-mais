@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import '../models/menu_item_model.dart';
 import '../style/app_thema.dart';
 import '../ui/placeholder_screen.dart';
-import '../ui/ai_chat_screen.dart';
 import '../ui/splash.dart';
 import '../ui/perfil.dart';
-import '../ui/redacao.dart';
 import '../ui/flashcards.dart';
 import '../ui/materias_screen.dart';
 
@@ -34,9 +32,23 @@ class AppDrawer extends StatelessWidget {
                   vertical: 12,
                   horizontal: 12,
                 ),
-                itemCount: AppMenu.items.length,
+
+                // Mostra todos os itens, menos Agenda e TRI
+                itemCount: AppMenu.items
+                    .where(
+                      (item) => item.label != 'Agenda' && item.label != 'TRI',
+                    )
+                    .length,
+
                 itemBuilder: (context, index) {
-                  final item = AppMenu.items[index];
+                  final items = AppMenu.items
+                      .where(
+                        (item) => item.label != 'Agenda' && item.label != 'TRI',
+                      )
+                      .toList();
+
+                  final item = items[index];
+
                   final isSelected = item.label == selectedLabel;
 
                   return _DrawerTile(
@@ -80,16 +92,6 @@ class AppDrawer extends StatelessWidget {
     }
 
     // =========================
-    // IA
-    // =========================
-    if (item.label == 'IA') {
-      Navigator.of(
-        context,
-      ).push(MaterialPageRoute(builder: (_) => const AiChatScreen()));
-      return;
-    }
-
-    // =========================
     // PERFIL
     // =========================
     if (item.label == 'Perfil') {
@@ -100,15 +102,8 @@ class AppDrawer extends StatelessWidget {
     }
 
     // =========================
-    // REDAÇÃO
+    // FLASHCARDS
     // =========================
-    if (item.label == 'Redação') {
-      Navigator.of(
-        context,
-      ).push(MaterialPageRoute(builder: (_) => const RedacaoPage()));
-      return;
-    }
-
     if (item.label == 'Flashcards') {
       Navigator.of(
         context,
@@ -116,6 +111,9 @@ class AppDrawer extends StatelessWidget {
       return;
     }
 
+    // =========================
+    // MATÉRIAS
+    // =========================
     if (item.label == 'Matérias') {
       Navigator.of(
         context,
@@ -123,6 +121,9 @@ class AppDrawer extends StatelessWidget {
       return;
     }
 
+    // =========================
+    // OUTROS
+    // =========================
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => PlaceholderScreen(title: item.label, icon: item.icon),
@@ -171,7 +172,9 @@ class _DrawerHeader extends StatelessWidget {
 
           IconButton(
             icon: const Icon(Icons.close, color: AppColors.textMedium),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
         ],
       ),

@@ -1,7 +1,10 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'ui/splash.dart';
 
-void main() {
+Future<void> main() async {
+  // Carrega o arquivo .env da pasta assets
+  await dotenv.load(fileName: "assets/.env");
   runApp(const MyApp());
 }
 
@@ -66,24 +69,18 @@ class _MyAppState extends State<MyApp> {
             )
           : ThemeData(
               brightness: Brightness.light,
-              // fundo atualizado para #c6cdd8
               scaffoldBackgroundColor: const Color(0xFFC6CDD8),
-
               primaryColor: const Color(0xFF1565C0),
-
               colorScheme: const ColorScheme.light(
                 primary: Color(0xFF1565C0),
                 secondary: Color(0xFF42A5F5),
                 surface: Colors.white,
               ),
-
               appBarTheme: const AppBarTheme(
                 backgroundColor: Color(0xFF1565C0),
                 foregroundColor: Colors.white,
               ),
-
               cardColor: Colors.white,
-
               textTheme: const TextTheme(
                 bodyMedium: TextStyle(color: Color(0xFF263238), fontSize: 16),
                 titleLarge: TextStyle(
@@ -92,7 +89,6 @@ class _MyAppState extends State<MyApp> {
                   fontSize: 22,
                 ),
               ),
-
               inputDecorationTheme: const InputDecorationTheme(
                 filled: true,
                 fillColor: Colors.white,
@@ -108,7 +104,6 @@ class _MyAppState extends State<MyApp> {
                   borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
               ),
-
               textSelectionTheme: const TextSelectionThemeData(
                 cursorColor: Color(0xFF1565C0),
                 selectionColor: Color(0xFF90CAF9),

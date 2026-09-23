@@ -19,10 +19,6 @@ class AppMenu {
     MenuItemData(icon: Icons.layers_outlined, label: 'Banco de Questões'),
     MenuItemData(icon: Icons.description_outlined, label: 'Simulados'),
     MenuItemData(icon: Icons.style_outlined, label: 'Flashcards'),
-    MenuItemData(icon: Icons.calendar_today_outlined, label: 'Agenda'),
-    MenuItemData(icon: Icons.edit_outlined, label: 'Redação'),
-    MenuItemData(icon: Icons.dashboard_outlined, label: 'TRI'),
-    MenuItemData(icon: Icons.chat_bubble_outline, label: 'IA'),
     MenuItemData(icon: Icons.person_outline, label: 'Perfil'),
   ];
 }
