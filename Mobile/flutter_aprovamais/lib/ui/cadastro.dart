@@ -1,44 +1,170 @@
-// lib/ui/cadastro.dart
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_aprovamais/ui/login.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home_screen.dart';
 
-class CadastroScreen extends StatelessWidget {
+class CadastroScreen extends StatefulWidget {
   const CadastroScreen({super.key});
+
+  @override
+  State<CadastroScreen> createState() => _CadastroScreenState();
+}
+
+class _CadastroScreenState extends State<CadastroScreen> {
+  final nomeController = TextEditingController();
+  final emailController = TextEditingController();
+  final senhaController = TextEditingController();
+  final confirmarController = TextEditingController();
+
+  bool carregando = false;
+  bool _obscurePassword = true;
+  bool _obscureConfirmar = true;
+
+  Future<void> cadastrarUsuario() async {
+    final nome = nomeController.text.trim();
+    final email = emailController.text.trim();
+    final senha = senhaController.text;
+    final confirmarSenha = confirmarController.text;
+
+    if (nome.isEmpty ||
+        email.isEmpty ||
+        senha.isEmpty ||
+        confirmarSenha.isEmpty) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Preencha todos os campos.'),
+        ),
+      );
+
+      return;
+    }
+
+    if (senha != confirmarSenha) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('As senhas não coincidem'),
+        ),
+      );
+
+      return;
+    }
+
+    setState(() => carregando = true);
+
+    final baseUrl = dotenv.env['API_URL'] ?? 'http://localhost:3000';
+    final url = Uri.parse('$baseUrl/usuario/adicionar');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'nome': nome,
+          'email': email,
+          'senha': senha,
+        }),
+      );
+
+      if (!mounted) return;
+
+      if (response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        final usuario = data['usuario'];
+
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('usuarioId', usuario['id']);
+
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              data['mensagem'] ?? 'Cadastro realizado!',
+            ),
+          ),
+        );
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
+      } else {
+        final erro = jsonDecode(response.body);
+
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Erro: ${erro['mensagem'] ?? erro['erro'] ?? 'Não foi possível cadastrar'}',
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Falha na conexão: $e'),
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => carregando = false);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    nomeController.dispose();
+    emailController.dispose();
+    senhaController.dispose();
+    confirmarController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     const fundoAzulClaro = Color(0xFFE8F0FE);
-    const azulBotao = Color(0xFF3B5998);
+    const azulBotao = Color(0xFF1A73E8);
     const azulTexto = Color(0xFF1A3C6E);
+    const fundoBranco = Colors.white;
 
     return Scaffold(
-      backgroundColor: fundoAzulClaro,
+      backgroundColor: fundoBranco,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24,
+              vertical: 30,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Ícone superior
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: azulBotao,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Icon(
-                    Icons.person_add_alt_1,
-                    color: Colors.white,
-                    size: 36,
-                  ),
+                const Icon(
+                  Icons.person_add_alt_1,
+                  color: azulBotao,
+                  size: 60,
                 ),
 
                 const SizedBox(height: 20),
 
-                // Título
                 const Text(
                   'Crie sua conta',
                   style: TextStyle(
@@ -50,162 +176,215 @@ class CadastroScreen extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 8),
+
                 const Text(
                   'Cadastre-se para começar',
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                  ),
                   textAlign: TextAlign.center,
                 ),
 
                 const SizedBox(height: 30),
 
-                // Card de cadastro
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(18),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.05),
+                        color: Color(0x0D000000),
                         blurRadius: 10,
-                        offset: const Offset(0, 4),
+                        offset: Offset(0, 4),
                       ),
                     ],
                   ),
                   child: Column(
                     children: [
-                      // Botão Google
-                      ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: Image.asset('assets/google_icon.png', height: 20),
-                        label: const Text(
-                          'Continuar com o Google',
-                          style: TextStyle(color: Colors.black87),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          elevation: 0,
-                          side: BorderSide(color: Colors.grey.shade300),
-                          minimumSize: const Size(double.infinity, 48),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 18),
-
-                      // Separador
-                      Row(
-                        children: [
-                          Expanded(child: Divider(color: Colors.grey.shade300)),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            child: Text(
-                              'ou',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                          Expanded(child: Divider(color: Colors.grey.shade300)),
-                        ],
-                      ),
-
-                      const SizedBox(height: 18),
-
-                      // Campo de e-mail
                       TextField(
+                        controller: nomeController,
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
                         decoration: InputDecoration(
+                          filled: true,
+                          fillColor: fundoAzulClaro,
+                          labelText: 'Nome',
+                          labelStyle: const TextStyle(
+                            color: Colors.black,
+                          ),
+                          prefixIcon: const Icon(
+                            Icons.person,
+                            color: azulBotao,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      TextField(
+                        controller: emailController,
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: fundoAzulClaro,
                           labelText: 'E-mail',
+                          labelStyle: const TextStyle(
+                            color: Colors.black,
+                          ),
                           hintText: 'voce@exemplo.com',
+                          hintStyle: const TextStyle(
+                            color: Colors.black54,
+                          ),
                           prefixIcon: const Icon(
                             Icons.email_outlined,
                             color: azulBotao,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
                           ),
                         ),
                       ),
 
                       const SizedBox(height: 16),
 
-                      // Campo de senha
                       TextField(
-                        obscureText: true,
+                        controller: senhaController,
+                        obscureText: _obscurePassword,
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
                         decoration: InputDecoration(
+                          filled: true,
+                          fillColor: fundoAzulClaro,
                           labelText: 'Senha',
+                          labelStyle: const TextStyle(
+                            color: Colors.black,
+                          ),
                           prefixIcon: const Icon(
                             Icons.lock_outline,
                             color: azulBotao,
                           ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: azulBotao,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
                           ),
                         ),
                       ),
 
                       const SizedBox(height: 16),
 
-                      // Campo confirmar senha
                       TextField(
-                        obscureText: true,
+                        controller: confirmarController,
+                        obscureText: _obscureConfirmar,
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
                         decoration: InputDecoration(
+                          filled: true,
+                          fillColor: fundoAzulClaro,
                           labelText: 'Confirme sua senha',
+                          labelStyle: const TextStyle(
+                            color: Colors.black,
+                          ),
                           prefixIcon: const Icon(
                             Icons.lock_outline,
                             color: azulBotao,
                           ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureConfirmar
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: azulBotao,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureConfirmar = !_obscureConfirmar;
+                              });
+                            },
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
                           ),
                         ),
                       ),
 
                       const SizedBox(height: 22),
 
-                      // Botão criar conta
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
-                            ),
-                          );
-                        },
+                        onPressed: carregando ? null : cadastrarUsuario,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: azulBotao,
-                          minimumSize: const Size(double.infinity, 48),
+                          minimumSize: const Size(
+                            double.infinity,
+                            48,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
-                          'Criar uma conta',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: carregando
+                            ? const SizedBox(
+                                width: 22,
+                                height: 22,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text(
+                                'Criar uma conta',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       ),
 
                       const SizedBox(height: 20),
 
-                      // Link para login com navegação
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
                             'Já tem uma conta? ',
-                            style: TextStyle(color: Colors.grey),
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
                           ),
+
                           GestureDetector(
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const LoginScreen(),
+                                  builder: (context) =>
+                                      const LoginScreen(),
                                 ),
                               );
                             },

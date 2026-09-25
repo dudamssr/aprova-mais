@@ -1,7 +1,9 @@
 import 'dart:convert';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cadastro.dart';
 import 'home_screen.dart';
@@ -17,65 +19,78 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController senhaController = TextEditingController();
-
   bool carregando = false;
+  bool _obscurePassword = true;
 
   Future<void> fazerLogin() async {
     final email = emailController.text.trim();
     final senha = senhaController.text;
 
     if (email.isEmpty || senha.isEmpty) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Preencha o e-mail e a senha.')),
       );
       return;
     }
 
-    setState(() {
-      carregando = true;
-    });
+    setState(() => carregando = true);
+
+    final baseUrl = dotenv.env['API_URL'] ?? "http://localhost:3000";
+    final url = Uri.parse('$baseUrl/usuario/login');
 
     try {
-      final resposta = await http.post(
-        Uri.parse('http://10.0.2.2:3000/usuario/login'),
+      final response = await http.post(
+        url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'senha': senha}),
       );
 
-      final dados = jsonDecode(resposta.body);
-
       if (!mounted) return;
 
-      if (resposta.statusCode == 200) {
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final usuario = data['usuario'];
+
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('usuarioId', usuario['id']);
+        log('ID salvo no SharedPreferences: ${usuario['id']}');
+
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(dados['mensagem'] ?? 'Login realizado com sucesso!'),
+            content: Text(data['mensagem'] ?? 'Login realizado com sucesso!'),
+            backgroundColor: Colors.green,
           ),
         );
 
+        if (!mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       } else {
+        final erro = jsonDecode(response.body);
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(dados['erro'] ?? 'E-mail ou senha incorretos.'),
+            content: Text(
+              erro['erro'] ?? erro['mensagem'] ?? 'E-mail ou senha incorretos.',
+            ),
+            backgroundColor: Colors.red,
           ),
         );
       }
     } catch (e) {
       if (!mounted) return;
-
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Não foi possível conectar ao servidor.')),
+        SnackBar(
+          content: Text('Falha na conexão: $e'),
+          backgroundColor: Colors.red,
+        ),
       );
     } finally {
-      if (mounted) {
-        setState(() {
-          carregando = false;
-        });
-      }
+      if (mounted) setState(() => carregando = false);
     }
   }
 
@@ -88,12 +103,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const fundoAzulClaro = Color(0xFFE8F0FE);
-    const azulBotao = Color(0xFF3B5998);
-    const azulTexto = Color(0xFF1A3C6E);
+    const fundoAzulClaro = Color(0xFFE8F0FE); // caixas
+    const azulBotao = Color(0xFF1A73E8);      // botão Entrar
+    const azulTexto = Color(0xFF1A3C6E);      // título
+    const fundoBranco = Colors.white;
 
     return Scaffold(
-      backgroundColor: fundoAzulClaro,
+      backgroundColor: fundoBranco,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -101,20 +117,12 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Image.asset(
-                    'assets/logo2.png',
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.contain,
-                  ),
-                ),
+                Image.asset('assets/logo2.png', width: 100, height: 100),
 
                 const SizedBox(height: 20),
 
                 const Text(
-                  'Bem vindo de volta',
+                  'Bem-vindo de volta!',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -152,10 +160,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ElevatedButton.icon(
                         onPressed: () {},
                         icon: Image.asset('assets/google_icon.png', height: 20),
-                        label: const Text(
-                          'Continuar com o Google',
-                          style: TextStyle(color: Colors.black87),
-                        ),
+                        label: const Text('Continuar com Google',
+                            style: TextStyle(color: Colors.black87)),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           elevation: 0,
@@ -174,10 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Expanded(child: Divider(color: Colors.grey.shade300)),
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 12),
-                            child: Text(
-                              'ou',
-                              style: TextStyle(color: Colors.grey),
-                            ),
+                            child: Text('ou', style: TextStyle(color: Colors.grey)),
                           ),
                           Expanded(child: Divider(color: Colors.grey.shade300)),
                         ],
@@ -187,16 +190,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       TextField(
                         controller: emailController,
-                        keyboardType: TextInputType.emailAddress,
+                        style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
+                          filled: true,
+                          fillColor: fundoAzulClaro,
                           labelText: 'E-mail',
+                          labelStyle: const TextStyle(color: Colors.black),
                           hintText: 'voce@exemplo.com',
-                          prefixIcon: const Icon(
-                            Icons.email_outlined,
-                            color: azulBotao,
-                          ),
+                          hintStyle: const TextStyle(color: Colors.black54),
+                          prefixIcon: const Icon(Icons.email_outlined, color: azulBotao),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
                           ),
                         ),
                       ),
@@ -205,34 +210,48 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       TextField(
                         controller: senhaController,
-                        obscureText: true,
+                        obscureText: _obscurePassword,
+                        style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
+                          filled: true,
+                          fillColor: fundoAzulClaro,
                           labelText: 'Senha',
-                          prefixIcon: const Icon(
-                            Icons.lock_outline,
-                            color: azulBotao,
-                          ),
-                          suffixIcon: TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const RedefinirSenhaPage(),
-                                ),
-                              );
-                            },
-                            child: const Text(
-                              'Esqueceu sua senha?',
-                              style: TextStyle(
-                                color: azulBotao,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
+                          labelStyle: const TextStyle(color: Colors.black),
+                          prefixIcon: const Icon(Icons.lock_outline, color: azulBotao),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                              color: azulBotao,
                             ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const RedefinirSenhaPage()),
+                            );
+                          },
+                          child: const Text(
+                            'Esqueci minha senha',
+                            style: TextStyle(
+                              color: azulBotao,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
@@ -258,7 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               )
                             : const Text(
-                                'Conecte-se',
+                                'Entrar',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -271,10 +290,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            'Não tem uma conta? ',
-                            style: TextStyle(color: Colors.grey),
-                          ),
+                          const Text('Não tem uma conta? ',
+                              style: TextStyle(color: Colors.grey)),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(

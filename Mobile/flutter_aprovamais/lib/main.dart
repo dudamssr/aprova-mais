@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'ui/splash.dart';
 
 Future<void> main() async {
-  // Carrega o arquivo .env da pasta assets
   await dotenv.load(fileName: "assets/.env");
   runApp(const MyApp());
 }

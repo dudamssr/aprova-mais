@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiService {
-  static const String baseUrl = "http://localhost:3000"; // ou IP da máquina
+  // Pega a URL da API do .env, com fallback para localhost
+  static final String baseUrl =
+      dotenv.env['API_URL'] ?? "http://localhost:3000";
 
   static Future<Map<String, dynamic>> login(String email, String senha) async {
     final response = await http.post(
