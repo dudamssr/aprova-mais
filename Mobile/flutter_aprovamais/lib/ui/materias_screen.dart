@@ -125,9 +125,7 @@ class _MateriasScreenState extends State<MateriasScreen> {
 
             const SizedBox(height: 20),
 
-            // =========================
-            // BARRA DE BUSCA
-            // =========================
+
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,

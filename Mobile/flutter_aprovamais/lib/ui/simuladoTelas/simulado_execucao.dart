@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../widgets/app_drawer.dart';
-import '../simuladoTelas/simulado_resultado.dart';
+import '../simuladoTelas/simulado.resultado.dart';
 
 class SimuladoExecucaoPage extends StatefulWidget {
   final String modo;

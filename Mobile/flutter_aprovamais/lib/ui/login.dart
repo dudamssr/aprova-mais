@@ -104,8 +104,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     const fundoAzulClaro = Color(0xFFE8F0FE); // caixas
-    const azulBotao = Color(0xFF1A73E8);      // botão Entrar
-    const azulTexto = Color(0xFF1A3C6E);      // título
+    const azulBotao = Color(0xFF1A73E8); // botão Entrar
+    const azulTexto = Color(0xFF1A3C6E); // título
     const fundoBranco = Colors.white;
 
     return Scaffold(
@@ -160,8 +160,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ElevatedButton.icon(
                         onPressed: () {},
                         icon: Image.asset('assets/google_icon.png', height: 20),
-                        label: const Text('Continuar com Google',
-                            style: TextStyle(color: Colors.black87)),
+                        label: const Text(
+                          'Continuar com Google',
+                          style: TextStyle(color: Colors.black87),
+                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           elevation: 0,
@@ -180,7 +182,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           Expanded(child: Divider(color: Colors.grey.shade300)),
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 12),
-                            child: Text('ou', style: TextStyle(color: Colors.grey)),
+                            child: Text(
+                              'ou',
+                              style: TextStyle(color: Colors.grey),
+                            ),
                           ),
                           Expanded(child: Divider(color: Colors.grey.shade300)),
                         ],
@@ -198,7 +203,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelStyle: const TextStyle(color: Colors.black),
                           hintText: 'voce@exemplo.com',
                           hintStyle: const TextStyle(color: Colors.black54),
-                          prefixIcon: const Icon(Icons.email_outlined, color: azulBotao),
+                          prefixIcon: const Icon(
+                            Icons.email_outlined,
+                            color: azulBotao,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide.none,
@@ -217,10 +225,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           fillColor: fundoAzulClaro,
                           labelText: 'Senha',
                           labelStyle: const TextStyle(color: Colors.black),
-                          prefixIcon: const Icon(Icons.lock_outline, color: azulBotao),
+                          prefixIcon: const Icon(
+                            Icons.lock_outline,
+                            color: azulBotao,
+                          ),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                              _obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                               color: azulBotao,
                             ),
                             onPressed: () {
@@ -242,7 +255,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const RedefinirSenhaPage()),
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const RedefinirSenhaPage(),
+                              ),
                             );
                           },
                           child: const Text(
@@ -290,8 +306,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Não tem uma conta? ',
-                              style: TextStyle(color: Colors.grey)),
+                          const Text(
+                            'Não tem uma conta? ',
+                            style: TextStyle(color: Colors.grey),
+                          ),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
