@@ -21,7 +21,105 @@ class _FlashcardsPageState extends State<FlashcardsPage> {
       'answer':
           'É uma relação que associa cada elemento de um conjunto a exatamente um elemento de outro conjunto.',
       'explanation':
-          'No ENEM, funções aparecem bastante em situações do cotidiano, como gráficos, preços, tarifas e crescimento.',
+          'No ENEM, funções aparecem em situações do cotidiano, como gráficos, preços e crescimento.',
+      'aprendido': false,
+      'favorito': false,
+    },
+    {
+      'subject': 'Português',
+      'question': 'O que é uma oração?',
+      'answer':
+          'É um enunciado organizado em torno de um verbo ou locução verbal.',
+      'explanation':
+          'Identificar os verbos ajuda a reconhecer orações e analisar períodos simples e compostos.',
+      'aprendido': false,
+      'favorito': false,
+    },
+    {
+      'subject': 'História',
+      'question': 'Quando ocorreu a Independência do Brasil?',
+      'answer': 'Em 7 de setembro de 1822.',
+      'explanation':
+          'Dom Pedro proclamou a Independência, rompendo os vínculos políticos com Portugal.',
+      'aprendido': false,
+      'favorito': false,
+    },
+    {
+      'subject': 'Geografia',
+      'question': 'O que é globalização?',
+      'answer':
+          'É o processo de integração econômica, cultural, social e tecnológica entre países.',
+      'explanation':
+          'No ENEM, aparece em questões sobre comércio internacional, tecnologia e desigualdade.',
+      'aprendido': false,
+      'favorito': false,
+    },
+    {
+      'subject': 'Biologia',
+      'question': 'Qual é a função da mitocôndria?',
+      'answer':
+          'Produzir a maior parte do ATP utilizado pela célula na respiração celular.',
+      'explanation':
+          'O ATP fornece energia para diversas atividades celulares.',
+      'aprendido': false,
+      'favorito': false,
+    },
+    {
+      'subject': 'Química',
+      'question': 'O que é uma ligação covalente?',
+      'answer':
+          'É uma ligação química formada pelo compartilhamento de pares de elétrons.',
+      'explanation':
+          'Ocorre geralmente entre átomos de elementos não metálicos.',
+      'aprendido': false,
+      'favorito': false,
+    },
+    {
+      'subject': 'Inglês',
+      'question': 'O que são cognatos?',
+      'answer':
+          'São palavras de idiomas diferentes que possuem origem e significado semelhantes.',
+      'explanation':
+          'Exemplo: “important”, em inglês, e “importante”, em português.',
+      'aprendido': false,
+      'favorito': false,
+    },
+    {
+      'subject': 'Literatura',
+      'question': 'Qual é uma característica do Modernismo brasileiro?',
+      'answer':
+          'A valorização da identidade nacional e a liberdade de expressão artística.',
+      'explanation':
+          'A Semana de Arte Moderna de 1922 foi um marco do Modernismo no Brasil.',
+      'aprendido': false,
+      'favorito': false,
+    },
+    {
+      'subject': 'Redação',
+      'question': 'Quais são as partes básicas de uma redação do ENEM?',
+      'answer': 'Introdução, desenvolvimento e conclusão.',
+      'explanation':
+          'A conclusão deve apresentar uma proposta de intervenção que respeite os direitos humanos.',
+      'aprendido': false,
+      'favorito': false,
+    },
+    {
+      'subject': 'Filosofia',
+      'question': 'O que é ética?',
+      'answer':
+          'É a reflexão sobre os princípios e valores que orientam as ações humanas.',
+      'explanation':
+          'Questões de ética envolvem responsabilidade, justiça, liberdade e convivência social.',
+      'aprendido': false,
+      'favorito': false,
+    },
+    {
+      'subject': 'Sociologia',
+      'question': 'O que é desigualdade social?',
+      'answer':
+          'É a distribuição desigual de recursos, direitos e oportunidades na sociedade.',
+      'explanation':
+          'Pode envolver diferenças de renda e de acesso à educação, saúde e moradia.',
       'aprendido': false,
       'favorito': false,
     },
@@ -29,17 +127,30 @@ class _FlashcardsPageState extends State<FlashcardsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final filtrados = flashcards
-        .where((card) {
-          if (filtro == 'Revisões pendentes') return !card['aprendido'];
-          if (filtro == 'Favoritas') return card['favorito'];
-          return true;
-        })
-        .where((card) {
-          if (materiaSelecionada == 'Todas as matérias') return true;
-          return card['subject'] == materiaSelecionada;
-        })
-        .toList();
+    final filtrados = flashcards.where((card) {
+      if (filtro == 'Revisões pendentes' && card['aprendido']) {
+        return false;
+      }
+
+      if (filtro == 'Favoritas' && !card['favorito']) {
+        return false;
+      }
+
+      if (materiaSelecionada != 'Todas as matérias' &&
+          card['subject'] != materiaSelecionada) {
+        return false;
+      }
+
+      return true;
+    }).toList();
+
+    final aprendidos = flashcards
+        .where((card) => card['aprendido'] == true)
+        .length;
+
+    final pendentes = flashcards
+        .where((card) => card['aprendido'] == false)
+        .length;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -59,22 +170,29 @@ class _FlashcardsPageState extends State<FlashcardsPage> {
 
             // Estatísticas
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _StatCard(
-                  label: 'Total',
-                  value: '${flashcards.length}',
-                  icon: Icons.layers,
+                Expanded(
+                  child: _StatCard(
+                    label: 'Total',
+                    value: '${flashcards.length}',
+                    icon: Icons.layers,
+                  ),
                 ),
-                _StatCard(
-                  label: 'Aprendidos',
-                  value: '${flashcards.where((c) => c['aprendido']).length}',
-                  icon: Icons.check_circle,
+                const SizedBox(width: 8),
+                Expanded(
+                  child: _StatCard(
+                    label: 'Aprendidos',
+                    value: '$aprendidos',
+                    icon: Icons.check_circle,
+                  ),
                 ),
-                _StatCard(
-                  label: 'Pendentes',
-                  value: '${flashcards.where((c) => !c['aprendido']).length}',
-                  icon: Icons.refresh,
+                const SizedBox(width: 8),
+                Expanded(
+                  child: _StatCard(
+                    label: 'Pendentes',
+                    value: '$pendentes',
+                    icon: Icons.refresh,
+                  ),
                 ),
               ],
             ),
@@ -88,50 +206,79 @@ class _FlashcardsPageState extends State<FlashcardsPage> {
                 _FilterChip(
                   label: 'Todas',
                   selected: filtro == 'Todas',
-                  onTap: () => setState(() => filtro = 'Todas'),
+                  onTap: () {
+                    setState(() {
+                      filtro = 'Todas';
+                    });
+                  },
                 ),
                 _FilterChip(
                   label: 'Revisões pendentes',
                   selected: filtro == 'Revisões pendentes',
-                  onTap: () => setState(() => filtro = 'Revisões pendentes'),
+                  onTap: () {
+                    setState(() {
+                      filtro = 'Revisões pendentes';
+                    });
+                  },
                 ),
                 _FilterChip(
                   label: 'Favoritas',
                   selected: filtro == 'Favoritas',
-                  onTap: () => setState(() => filtro = 'Favoritas'),
+                  onTap: () {
+                    setState(() {
+                      filtro = 'Favoritas';
+                    });
+                  },
                 ),
                 _DropdownFilter(
                   value: materiaSelecionada,
-                  onChanged: (v) => setState(() => materiaSelecionada = v!),
+                  onChanged: (v) {
+                    if (v != null) {
+                      setState(() {
+                        materiaSelecionada = v;
+                      });
+                    }
+                  },
                 ),
               ],
             ),
             const SizedBox(height: 28),
 
-            // Lista de flashcards filtrados
+            // Lista de flashcards
             if (filtrados.isEmpty)
-              const Center(
-                child: Text(
-                  'Nenhum flashcard neste filtro.',
-                  style: TextStyle(color: textDark, fontSize: 16),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 30),
+                child: Center(
+                  child: Text(
+                    'Nenhum flashcard neste filtro.',
+                    style: TextStyle(color: textDark, fontSize: 16),
+                  ),
                 ),
               )
             else
               for (final card in filtrados) ...[
                 Flashcard(
-                  subject: card['subject'],
-                  question: card['question'],
-                  answer: card['answer'],
-                  explanation: card['explanation'],
-                  favorito: card['favorito'],
+                  subject: card['subject'] as String,
+                  question: card['question'] as String,
+                  answer: card['answer'] as String,
+                  explanation: card['explanation'] as String,
+                  favorito: card['favorito'] as bool,
                   textColor: textDark,
-                  onFavoritar: () =>
-                      setState(() => card['favorito'] = !card['favorito']),
+                  onFavoritar: () {
+                    setState(() {
+                      card['favorito'] = !(card['favorito'] as bool);
+                    });
+                  },
                 ),
                 const SizedBox(height: 10),
-                if (!card['aprendido'])
+
+                if (!(card['aprendido'] as bool))
                   ElevatedButton.icon(
-                    onPressed: () => setState(() => card['aprendido'] = true),
+                    onPressed: () {
+                      setState(() {
+                        card['aprendido'] = true;
+                      });
+                    },
                     icon: const Icon(Icons.check_circle_outline),
                     label: const Text('Marcar como aprendido'),
                     style: ElevatedButton.styleFrom(
@@ -175,6 +322,7 @@ class _FlashcardsPageState extends State<FlashcardsPage> {
   }
 }
 
+// BARRA SUPERIOR
 class _TopBar extends StatelessWidget {
   const _TopBar();
 
@@ -189,7 +337,7 @@ class _TopBar extends StatelessWidget {
               width: 42,
               height: 42,
               decoration: const BoxDecoration(
-                color: primaryColor, // voltou para o azul original da logo
+                color: primaryColor,
                 shape: BoxShape.circle,
               ),
               child: Image.asset(
@@ -203,7 +351,7 @@ class _TopBar extends StatelessWidget {
             const Text(
               'Flashcards',
               style: TextStyle(
-                color: Color(0xFF2457C5), // azul médio para o título
+                color: Color(0xFF2457C5),
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
               ),
@@ -212,10 +360,7 @@ class _TopBar extends StatelessWidget {
         ),
         Builder(
           builder: (context) => IconButton(
-            icon: const Icon(
-              Icons.menu,
-              color: Color(0xFF102F55),
-            ), // azul escuro para o menu
+            icon: const Icon(Icons.menu, color: Color(0xFF102F55)),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
@@ -224,7 +369,7 @@ class _TopBar extends StatelessWidget {
   }
 }
 
-// COMPONENTES DE UI
+// CARD DE ESTATÍSTICAS
 class _StatCard extends StatelessWidget {
   final String label;
   final String value;
@@ -239,7 +384,6 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -248,7 +392,7 @@ class _StatCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(icon, color: Color(0xFF299FD6), size: 24), // azul claro
+          Icon(icon, color: const Color(0xFF299FD6), size: 24),
           const SizedBox(height: 6),
           Text(
             value,
@@ -258,13 +402,18 @@ class _StatCard extends StatelessWidget {
               color: textDark,
             ),
           ),
-          Text(label, style: const TextStyle(fontSize: 13, color: textMedium)),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 12, color: textMedium),
+          ),
         ],
       ),
     );
   }
 }
 
+// FILTRO
 class _FilterChip extends StatelessWidget {
   final String label;
   final bool selected;
@@ -281,7 +430,7 @@ class _FilterChip extends StatelessWidget {
     return ChoiceChip(
       label: Text(label),
       selected: selected,
-      selectedColor: Color(0xFF299FD6), // azul claro
+      selectedColor: const Color(0xFF299FD6),
       backgroundColor: Colors.white,
       labelStyle: TextStyle(
         color: selected ? Colors.white : textDark,
@@ -292,6 +441,7 @@ class _FilterChip extends StatelessWidget {
   }
 }
 
+// FILTRO POR MATÉRIA
 class _DropdownFilter extends StatelessWidget {
   final String value;
   final ValueChanged<String?> onChanged;
@@ -310,6 +460,7 @@ class _DropdownFilter extends StatelessWidget {
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: value,
+          isExpanded: false,
           items: const [
             DropdownMenuItem(
               value: 'Todas as matérias',
@@ -320,20 +471,17 @@ class _DropdownFilter extends StatelessWidget {
             DropdownMenuItem(value: 'História', child: Text('História')),
             DropdownMenuItem(value: 'Geografia', child: Text('Geografia')),
             DropdownMenuItem(value: 'Biologia', child: Text('Biologia')),
-            DropdownMenuItem(value: 'Física', child: Text('Física')),
             DropdownMenuItem(value: 'Química', child: Text('Química')),
+            DropdownMenuItem(value: 'Inglês', child: Text('Inglês')),
             DropdownMenuItem(value: 'Literatura', child: Text('Literatura')),
             DropdownMenuItem(value: 'Redação', child: Text('Redação')),
             DropdownMenuItem(value: 'Filosofia', child: Text('Filosofia')),
             DropdownMenuItem(value: 'Sociologia', child: Text('Sociologia')),
           ],
           onChanged: onChanged,
-          style: const TextStyle(
-            color: Color(0xFF102F55), // azul escuro para texto
-            fontSize: 15,
-          ),
-          dropdownColor: Colors.white, // fundo branco no menu
-          iconEnabledColor: Color(0xFF299FD6), // ícone da setinha em azul claro
+          style: const TextStyle(color: Color(0xFF102F55), fontSize: 15),
+          dropdownColor: Colors.white,
+          iconEnabledColor: const Color(0xFF299FD6),
         ),
       ),
     );

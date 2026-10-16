@@ -7,6 +7,7 @@ import '../ui/splash.dart';
 import '../ui/perfil.dart';
 import '../ui/flashcards.dart';
 import '../ui/materias_screen.dart';
+import '../ui/simulado.dart';
 
 class AppDrawer extends StatelessWidget {
   final String selectedLabel;
@@ -32,14 +33,11 @@ class AppDrawer extends StatelessWidget {
                   vertical: 12,
                   horizontal: 12,
                 ),
-
-                // Mostra todos os itens, menos Agenda e TRI
                 itemCount: AppMenu.items
                     .where(
                       (item) => item.label != 'Agenda' && item.label != 'TRI',
                     )
                     .length,
-
                 itemBuilder: (context, index) {
                   final items = AppMenu.items
                       .where(
@@ -48,7 +46,6 @@ class AppDrawer extends StatelessWidget {
                       .toList();
 
                   final item = items[index];
-
                   final isSelected = item.label == selectedLabel;
 
                   return _DrawerTile(
@@ -77,23 +74,15 @@ class AppDrawer extends StatelessWidget {
   }
 
   void _onItemTap(BuildContext context, MenuItemData item, bool isSelected) {
-    // Fecha o Drawer.
     Navigator.of(context).pop();
 
-    // Se já estiver nessa tela, não navega novamente.
     if (isSelected) return;
 
-    // =========================
-    // INÍCIO
-    // =========================
     if (item.label == 'Início') {
       Navigator.of(context).popUntil((route) => route.isFirst);
       return;
     }
 
-    // =========================
-    // PERFIL
-    // =========================
     if (item.label == 'Perfil') {
       Navigator.of(
         context,
@@ -101,9 +90,6 @@ class AppDrawer extends StatelessWidget {
       return;
     }
 
-    // =========================
-    // FLASHCARDS
-    // =========================
     if (item.label == 'Flashcards') {
       Navigator.of(
         context,
@@ -111,9 +97,6 @@ class AppDrawer extends StatelessWidget {
       return;
     }
 
-    // =========================
-    // MATÉRIAS
-    // =========================
     if (item.label == 'Matérias') {
       Navigator.of(
         context,
@@ -121,9 +104,13 @@ class AppDrawer extends StatelessWidget {
       return;
     }
 
-    // =========================
-    // OUTROS
-    // =========================
+    if (item.label == 'Simulado') {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (_) => const SimuladoPage()));
+      return;
+    }
+
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => PlaceholderScreen(title: item.label, icon: item.icon),
@@ -139,7 +126,6 @@ class _DrawerHeader extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 16, 12, 16),
       child: Row(
         children: [
-          // Logo do aplicativo
           Container(
             width: 34,
             height: 34,
@@ -156,9 +142,7 @@ class _DrawerHeader extends StatelessWidget {
               ),
             ),
           ),
-
           const SizedBox(width: 10),
-
           const Expanded(
             child: Text(
               AppMenu.appName,
@@ -169,7 +153,6 @@ class _DrawerHeader extends StatelessWidget {
               ),
             ),
           ),
-
           IconButton(
             icon: const Icon(Icons.close, color: AppColors.textMedium),
             onPressed: () {
@@ -220,9 +203,7 @@ class _DrawerTile extends StatelessWidget {
                   size: 20,
                   color: isSelected ? Colors.white : AppColors.primaryBlue,
                 ),
-
                 const SizedBox(width: 14),
-
                 Text(
                   item.label,
                   style: TextStyle(
@@ -256,9 +237,7 @@ class _LogoutTile extends StatelessWidget {
           child: Row(
             children: [
               Icon(Icons.logout, size: 20, color: Colors.redAccent),
-
               SizedBox(width: 14),
-
               Text(
                 'Sair',
                 style: TextStyle(
