@@ -38,9 +38,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Preencha todos os campos.'),
-        ),
+        const SnackBar(content: Text('Preencha todos os campos.')),
       );
 
       return;
@@ -49,11 +47,9 @@ class _CadastroScreenState extends State<CadastroScreen> {
     if (senha != confirmarSenha) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('As senhas não coincidem'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('As senhas não coincidem')));
 
       return;
     }
@@ -66,14 +62,8 @@ class _CadastroScreenState extends State<CadastroScreen> {
     try {
       final response = await http.post(
         url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'nome': nome,
-          'email': email,
-          'senha': senha,
-        }),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'nome': nome, 'email': email, 'senha': senha}),
       );
 
       if (!mounted) return;
@@ -88,18 +78,12 @@ class _CadastroScreenState extends State<CadastroScreen> {
         if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              data['mensagem'] ?? 'Cadastro realizado!',
-            ),
-          ),
+          SnackBar(content: Text(data['mensagem'] ?? 'Cadastro realizado!')),
         );
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       } else {
         final erro = jsonDecode(response.body);
@@ -117,11 +101,9 @@ class _CadastroScreenState extends State<CadastroScreen> {
     } catch (e) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Falha na conexão: $e'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Falha na conexão: $e')));
     } finally {
       if (mounted) {
         setState(() => carregando = false);
@@ -150,18 +132,11 @@ class _CadastroScreenState extends State<CadastroScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 30,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.person_add_alt_1,
-                  color: azulBotao,
-                  size: 60,
-                ),
+                const Icon(Icons.person_add_alt_1, color: azulBotao, size: 60),
 
                 const SizedBox(height: 20),
 
@@ -179,10 +154,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
                 const Text(
                   'Cadastre-se para começar',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey,
-                  ),
+                  style: TextStyle(fontSize: 15, color: Colors.grey),
                   textAlign: TextAlign.center,
                 ),
 
@@ -192,7 +164,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: fundoBranco,
                     borderRadius: BorderRadius.circular(18),
                     boxShadow: const [
                       BoxShadow(
@@ -206,16 +178,12 @@ class _CadastroScreenState extends State<CadastroScreen> {
                     children: [
                       TextField(
                         controller: nomeController,
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
+                        style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: fundoAzulClaro,
                           labelText: 'Nome',
-                          labelStyle: const TextStyle(
-                            color: Colors.black,
-                          ),
+                          labelStyle: const TextStyle(color: Colors.black),
                           prefixIcon: const Icon(
                             Icons.person,
                             color: azulBotao,
@@ -231,20 +199,15 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
                       TextField(
                         controller: emailController,
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: fundoAzulClaro,
                           labelText: 'E-mail',
-                          labelStyle: const TextStyle(
-                            color: Colors.black,
-                          ),
+                          labelStyle: const TextStyle(color: Colors.black),
                           hintText: 'voce@exemplo.com',
-                          hintStyle: const TextStyle(
-                            color: Colors.black54,
-                          ),
+                          hintStyle: const TextStyle(color: Colors.black54),
                           prefixIcon: const Icon(
                             Icons.email_outlined,
                             color: azulBotao,
@@ -261,16 +224,12 @@ class _CadastroScreenState extends State<CadastroScreen> {
                       TextField(
                         controller: senhaController,
                         obscureText: _obscurePassword,
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
+                        style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: fundoAzulClaro,
                           labelText: 'Senha',
-                          labelStyle: const TextStyle(
-                            color: Colors.black,
-                          ),
+                          labelStyle: const TextStyle(color: Colors.black),
                           prefixIcon: const Icon(
                             Icons.lock_outline,
                             color: azulBotao,
@@ -300,16 +259,12 @@ class _CadastroScreenState extends State<CadastroScreen> {
                       TextField(
                         controller: confirmarController,
                         obscureText: _obscureConfirmar,
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
+                        style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: fundoAzulClaro,
                           labelText: 'Confirme sua senha',
-                          labelStyle: const TextStyle(
-                            color: Colors.black,
-                          ),
+                          labelStyle: const TextStyle(color: Colors.black),
                           prefixIcon: const Icon(
                             Icons.lock_outline,
                             color: azulBotao,
@@ -340,10 +295,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                         onPressed: carregando ? null : cadastrarUsuario,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: azulBotao,
-                          minimumSize: const Size(
-                            double.infinity,
-                            48,
-                          ),
+                          minimumSize: const Size(double.infinity, 48),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -368,14 +320,15 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
                       const SizedBox(height: 20),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 4,
+                        runSpacing: 4,
                         children: [
                           const Text(
-                            'Já tem uma conta? ',
-                            style: TextStyle(
-                              color: Colors.grey,
-                            ),
+                            'Já tem uma conta?',
+                            style: TextStyle(color: Colors.grey),
                           ),
 
                           GestureDetector(
@@ -383,8 +336,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      const LoginScreen(),
+                                  builder: (context) => const LoginScreen(),
                                 ),
                               );
                             },

@@ -15,6 +15,7 @@ class AppMenu {
 
   static const List<MenuItemData> items = [
     MenuItemData(icon: Icons.home_outlined, label: 'Início'),
+    MenuItemData(icon: Icons.style_outlined, label: 'Agenda'),
     MenuItemData(icon: Icons.menu_book_outlined, label: 'Matérias'),
     MenuItemData(icon: Icons.layers_outlined, label: 'Banco de Questões'),
     MenuItemData(icon: Icons.description_outlined, label: 'Simulado'),

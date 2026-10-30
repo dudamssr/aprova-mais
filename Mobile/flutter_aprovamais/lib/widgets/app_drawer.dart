@@ -8,6 +8,7 @@ import '../ui/perfil.dart';
 import '../ui/flashcards.dart';
 import '../ui/materias_screen.dart';
 import '../ui/simulado.dart';
+import '../ui/agenda.dart';
 
 class AppDrawer extends StatelessWidget {
   final String selectedLabel;
@@ -34,15 +35,11 @@ class AppDrawer extends StatelessWidget {
                   horizontal: 12,
                 ),
                 itemCount: AppMenu.items
-                    .where(
-                      (item) => item.label != 'Agenda' && item.label != 'TRI',
-                    )
+                    .where((item) => item.label != 'TRI')
                     .length,
                 itemBuilder: (context, index) {
                   final items = AppMenu.items
-                      .where(
-                        (item) => item.label != 'Agenda' && item.label != 'TRI',
-                      )
+                      .where((item) => item.label != 'TRI')
                       .toList();
 
                   final item = items[index];
@@ -104,11 +101,17 @@ class AppDrawer extends StatelessWidget {
       return;
     }
 
- 
     if (item.label == 'Simulado') {
       Navigator.of(
         context,
       ).push(MaterialPageRoute(builder: (_) => const SimuladoPage()));
+      return;
+    }
+
+    if (item.label == 'Agenda') {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (_) => const AgendaDeEstudosPage()));
       return;
     }
 
