@@ -9,6 +9,9 @@ import '../ui/flashcards.dart';
 import '../ui/materias_screen.dart';
 import '../ui/simulado.dart';
 import '../ui/agenda.dart';
+import '../ui/question_bank.dart';
+import '../ui/tri.dart';
+import '../ui/ia.dart';
 
 class AppDrawer extends StatelessWidget {
   final String selectedLabel;
@@ -80,6 +83,13 @@ class AppDrawer extends StatelessWidget {
       return;
     }
 
+    if (item.label == 'Chat IA') {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (_) => const IaChatScreen()));
+      return;
+    }
+
     if (item.label == 'Perfil') {
       Navigator.of(
         context,
@@ -115,6 +125,20 @@ class AppDrawer extends StatelessWidget {
       return;
     }
 
+    if (item.label == 'Banco de Questões') {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (_) => const QuestionBankScreen()));
+      return;
+    }
+
+    if (item.label == 'TRI') {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (_) => const TriCalculoScreen()));
+      return;
+    }
+
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => PlaceholderScreen(title: item.label, icon: item.icon),
@@ -146,7 +170,9 @@ class _DrawerHeader extends StatelessWidget {
               ),
             ),
           ),
+
           const SizedBox(width: 10),
+
           const Expanded(
             child: Text(
               AppMenu.appName,
@@ -157,6 +183,7 @@ class _DrawerHeader extends StatelessWidget {
               ),
             ),
           ),
+
           IconButton(
             icon: const Icon(Icons.close, color: AppColors.textMedium),
             onPressed: () {
@@ -207,7 +234,9 @@ class _DrawerTile extends StatelessWidget {
                   size: 20,
                   color: isSelected ? Colors.white : AppColors.primaryBlue,
                 ),
+
                 const SizedBox(width: 14),
+
                 Text(
                   item.label,
                   style: TextStyle(
@@ -241,7 +270,9 @@ class _LogoutTile extends StatelessWidget {
           child: Row(
             children: [
               Icon(Icons.logout, size: 20, color: Colors.redAccent),
+
               SizedBox(width: 14),
+
               Text(
                 'Sair',
                 style: TextStyle(

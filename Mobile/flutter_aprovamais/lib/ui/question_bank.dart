@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/question_model.dart';
 import '../widgets/question_card.dart';
+import '../widgets/app_drawer.dart';
 
 class QuestionBankScreen extends StatefulWidget {
   const QuestionBankScreen({super.key});
@@ -10,7 +11,6 @@ class QuestionBankScreen extends StatefulWidget {
 }
 
 class _QuestionBankScreenState extends State<QuestionBankScreen> {
-  // Lista simulada com várias questões de vestibulares e ENEM
   final List<Question> questions = [
     Question(
       id: '1',
@@ -76,115 +76,96 @@ class _QuestionBankScreenState extends State<QuestionBankScreen> {
     ),
   ];
 
+  static const Color azul = Color(0xFF1E3A8A);
+  static const Color azulMedio = Color(0xFF356DB8);
+  static const Color fundo = Color(0xFFF0F7FD);
+  static const Color borda = Color(0xFFD4E7FA);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: fundo,
+      drawer: const AppDrawer(selectedLabel: 'Banco de Questões'),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF8FAFC),
+        backgroundColor: Colors.white,
         elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFF1E3A8A),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.auto_awesome,
-              color: Colors.white,
-              size: 20,
-            ),
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.menu, color: Color(0xFF1E293B)),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          const Text(
-            'Banco de Questões',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF0F172A),
-            ),
-          ),
-          const SizedBox(height: 4),
-          const Text(
-            'Pratique com filtros avançados e acompanhe seu desempenho',
-            style: TextStyle(fontSize: 14, color: Color(0xFF64748B)),
-          ),
-          const SizedBox(height: 16),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                _buildCategoryChip('Todas', isSelected: true),
-                _buildCategoryChip('Favoritas'),
-                _buildCategoryChip('Erradas'),
-                _buildCategoryChip('Respondidas'),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
+        toolbarHeight: 72,
+        automaticallyImplyLeading: false,
+        titleSpacing: 0,
+        title: Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Row(
             children: [
-              Expanded(
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Buscar questão...',
-                    prefixIcon: const Icon(
-                      Icons.search,
-                      color: Color(0xFF94A3B8),
+              Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: azul,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: azul.withValues(alpha: 0.18),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
                     ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
-                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Image.asset(
+                    'assets/logo2.png', // 🟦 Caminho da sua logo
+                    width: 26,
+                    height: 26,
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.school_rounded, color: Colors.white),
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
-              OutlinedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.filter_list, color: Color(0xFF1E3A8A)),
-                label: const Text(
-                  'Filtros',
-                  style: TextStyle(color: Color(0xFF1E293B)),
-                ),
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 14,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  side: const BorderSide(color: Color(0xFFE2E8F0)),
+              const SizedBox(width: 10),
+              const Text(
+                'Banco de Questões',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: azul,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+        ),
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              onPressed: () => Scaffold.of(context).openDrawer(),
+              padding: const EdgeInsets.only(right: 20),
+              icon: const Icon(Icons.menu, color: azul, size: 26),
+            ),
+          ),
+        ],
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(1),
+          child: Divider(height: 1, thickness: 1, color: borda),
+        ),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+        children: [
+          const Text(
+            'Pratique com filtros avançados e acompanhe seu desempenho',
+            style: TextStyle(
+              fontSize: 18,
+              height: 1.5,
+              color: Color(0xFF5275A6),
+            ),
+          ),
+          const SizedBox(height: 26),
+          _buildFilterSection(),
+          const SizedBox(height: 20),
           Text(
             '${questions.length} questão(ões) encontrada(s)',
             style: const TextStyle(
               fontSize: 14,
-              color: Color(0xFF64748B),
+              color: Color(0xFF5275A6),
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -193,9 +174,7 @@ class _QuestionBankScreenState extends State<QuestionBankScreen> {
             (q) => QuestionCard(
               question: q,
               onFavoriteToggle: () {
-                setState(() {
-                  q.isFavorite = !q.isFavorite;
-                });
+                setState(() => q.isFavorite = !q.isFavorite);
               },
               onOptionSelected: (selectedLetter) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -211,7 +190,86 @@ class _QuestionBankScreenState extends State<QuestionBankScreen> {
     );
   }
 
-  Widget _buildCategoryChip(String label, {bool isSelected = false}) {
+  Widget _buildFilterSection() {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: borda),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Filtros',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: azul,
+            ),
+          ),
+          const SizedBox(height: 14),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Buscar questão...',
+                    prefixIcon: const Icon(
+                      Icons.search,
+                      color: Color(0xFF94A3B8),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: borda),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: borda),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              OutlinedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.filter_list, color: azulMedio),
+                label: const Text('Filtros', style: TextStyle(color: azul)),
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 14,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  side: const BorderSide(color: borda),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 8,
+            runSpacing: 10,
+            children: [
+              _buildCategoryChip('Todas', isSelected: true),
+              _buildCategoryChip('Favoritas'),
+              _buildCategoryChip('Erradas'),
+              _buildCategoryChip('Respondidas'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+   Widget _buildCategoryChip(String label, {bool isSelected = false}) {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: ChoiceChip(
