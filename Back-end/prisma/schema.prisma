@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Usuario {
+  id           Int      @id @default(autoincrement())
+  nome         String
+  email        String   @unique
+  senha        String
+  tipo         String   @default("ALUNO")
+  dataCadastro DateTime @default(now())
+
+  simulados         Simulado[]
+  flashcards        FlashcardUsuario[]
+  agendaTarefas     AgendaTarefa[]
+  tokensRecuperacao TokenRecuperacao[]
+}
+
+model Materia {
+  id        Int    @id @default(autoincrement())
+  nome      String
+  descricao String
+
+  conteudos Conteudo[]
+}
+
+model Conteudo {
+  id          Int      @id @default(autoincrement())
+  titulo      String
+  resumo      String
+  ordem       Int
+  dataCriacao DateTime @default(now())
+
+  materiaId Int
+  materia   Materia @relation(fields: [materiaId], references: [id])
+
+  questoes   Questao[]
+  flashcards Flashcard[]
+}
+
+model Questao {
+  id          Int    @id @default(autoincrement())
+  enunciado   String
+  dificuldade String
+  area        String
+  ano         String
+
+  conteudoId Int
+  conteudo   Conteudo @relation(fields: [conteudoId], references: [id])
+
+  alternativas Alternativa[]
+  respostas    Resposta[]
+}
+
+model Alternativa {
+  id      Int     @id @default(autoincrement())
+  texto   String
+  correta Boolean
+  ordem   String
+
+  questaoId Int
+  questao   Questao @relation(fields: [questaoId], references: [id])
+
+  respostas Resposta[]
+}
+
+model Simulado {
+  id             Int      @id @default(autoincrement())
+  dataRealizacao DateTime
+  comTempo       Boolean
+  tempoTotalMin  Int?
+  notaObjetiva   Float?
+  notaTri        Float?
+
+  usuarioId Int
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+
+  respostas Resposta[]
+}
+
+model Resposta {
+  id           Int      @id @default(autoincrement())
+  dataResposta DateTime @default(now())
+  correta      Boolean
+
+  simuladoId    Int
+  questaoId     Int
+  alternativaId Int
+
+  simulado    Simulado    @relation(fields: [simuladoId], references: [id])
+  questao     Questao     @relation(fields: [questaoId], references: [id])
+  alternativa Alternativa @relation(fields: [alternativaId], references: [id])
+}
+
+model Flashcard {
+  id       Int    @id @default(autoincrement())
+  pergunta String
+  resposta String
+  ordem    Int
+
+  conteudoId Int
+  conteudo   Conteudo @relation(fields: [conteudoId], references: [id])
+
+  usuarios FlashcardUsuario[]
+}
+
+model FlashcardUsuario {
+  id           Int      @id @default(autoincrement())
+  dataRevisao  DateTime
+  nivelDominio Int
+
+  usuarioId   Int
+  flashcardId Int
+
+  usuario   Usuario   @relation(fields: [usuarioId], references: [id])
+  flashcard Flashcard @relation(fields: [flashcardId], references: [id])
+}
+
+model AgendaTarefa {
+  id         Int      @id @default(autoincrement())
+  titulo     String
+  data       DateTime
+  horario    String
+  materia    String
+  tipo       String
+  prioridade String
+  concluida  Boolean  @default(false)
+  usuarioId  Int
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
+
+  @@map("agenda_tarefas")
+}
+
+model TokenRecuperacao {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  expiracao DateTime
+  utilizado Boolean  @default(false)
+
+  usuarioId Int
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+
+  @@map("tokens_recuperacao")
+}
